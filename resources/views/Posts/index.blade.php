@@ -38,35 +38,48 @@
 
         <!-- Posts List (Centered with Flexbox) -->
         <div class="d-flex justify-content-center">
-            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 w-100">
-                @foreach($posts as $post)
-                    <div class="col d-flex justify-content-center">
-                        <div class="card shadow-sm d-flex flex-column justify-content-between" style="height: 400px; width: 300px;">
-                            <div class="card-body">
-                                <!-- Post Title and Delete Button (Centered) -->
-                                <div class="d-flex justify-content-between mb-4">
-                                    <span class="h5 text-primary">{{ $post->title }}</span>
-                                    <form action="{{ route('posts.destroy', $post->id) }}" method="POST" style="display:inline;" class="d-flex justify-content-center">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button 
-                                            type="submit" 
-                                            onclick="return confirm('Are you sure you want to delete this post?')" 
-                                            class="btn btn-danger btn-sm"
-                                        >
-                                            Delete
-                                        </button>
-                                    </form>
-                                </div>
-                                <div class="text-center mb-3">
-                                    <img src="{{ asset('images/'.$post->image) }}" alt="Post Image" class="img-fluid rounded mb-2" style="max-height: 200px; object-fit: cover;">
-                                </div>
-                                <p class="card-text text-muted">{{ Str::limit($post->body, 100) }}...</p>
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
+        <table class="table table-bordered table-hover w-100">
+    <thead class="thead-dark">
+        <tr>
+            <th>Title</th>
+            <th>Image</th>
+            <th>Description</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach($posts as $post)
+        <tr>
+            <!-- Post Title -->
+            <td class="text-primary align-middle">{{ $post->title }}</td>
+
+            <!-- Post Image -->
+            <td class="text-center align-middle">
+                <img src="{{ asset('images/'.$post->image) }}" alt="Post Image" class="img-fluid rounded" style="max-height: 100px; object-fit: cover;">
+            </td>
+
+            <!-- Post Description -->
+            <td class="align-middle">{{ Str::limit($post->body, 100) }}...</td>
+
+            <!-- Action Buttons -->
+            <td class="text-center align-middle">
+                <form action="{{ route('posts.destroy', $post->id) }}" method="POST" style="display:inline;">
+                    @csrf
+                    @method('DELETE')
+                    <button 
+                        type="submit" 
+                        onclick="return confirm('Are you sure you want to delete this post?')" 
+                        class="btn btn-danger btn-sm"
+                    >
+                        Delete
+                    </button>
+                </form>
+            </td>
+        </tr>
+        @endforeach
+    </tbody>
+</table>
+
         </div>
     </div>
 
